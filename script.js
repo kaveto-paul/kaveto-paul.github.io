@@ -7,7 +7,7 @@
    freely; the site rebuilds itself from this list.
    ========================================================= */
 
-const WHATSAPP_NUMBER = "264811234567"; // <-- REPLACE with your real WhatsApp number, no + or spaces (264 = Namibia code)
+const WHATSAPP_NUMBER = "264812797483"; // <-- REPLACE with your real WhatsApp number, no + or spaces (264 = Namibia code)
 
 const CATEGORIES = [
   {
