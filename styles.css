@@ -38,10 +38,18 @@ body {
 }
 
 h1, h2 {
-  font-family: var(--serif);
+  font-family: var(--sans);
+  font-weight: 700;
   color: var(--navy);
   margin: 0 0 12px;
   line-height: 1.15;
+}
+
+/* Anton (condensed display font) is reserved for the big hero headline
+   only — its lowercase letters (like "i") render oddly at smaller
+   sizes, so section headings and cards use bold sans instead. */
+.hero h1 {
+  font-family: var(--display);
 }
 
 a { color: inherit; }
@@ -55,10 +63,11 @@ a { color: inherit; }
   background-image:
     linear-gradient(180deg, rgba(17,18,20,.5) 0%, rgba(17,18,20,.85) 100%),
     url("header-bg.jpg");
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
   color: #fff;
-  min-height: 118px;
+  min-height: 230px;
   display: flex;
   align-items: center;
 }
@@ -71,14 +80,14 @@ a { color: inherit; }
 }
 .wordmark {
   font-family: var(--serif);
-  font-size: 20.5px;
-  line-height: 1.2;
+  font-size: 27px;
+  line-height: 1.15;
   margin: 0;
   text-shadow: 0 1px 4px rgba(0,0,0,0.35);
 }
 .wordmark span {
   display: block;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 400;
   color: #dfe3e8;
   letter-spacing: 0.01em;
@@ -135,22 +144,22 @@ a { color: inherit; }
 
 /* ===== Hero ===== */
 .hero {
-  padding: 44px 0 36px;
+  padding: 30px 0 28px;
   background: linear-gradient(180deg, var(--navy) 0%, var(--navy) 55%, var(--paper) 55%);
 }
 .hero .wrap {
   background: #fff;
   border-radius: var(--radius);
-  padding: 30px 22px 26px;
+  padding: 22px 20px 20px;
   box-shadow: 0 1px 0 var(--line);
 }
 
 /* hero-badge circular photo removed per feedback — kept CSS out for cleanliness */
 .hero h1 {
-  font-size: 34px;
+  font-size: 27px;
   text-transform: uppercase;
   letter-spacing: 0.01em;
-  line-height: 1.05;
+  line-height: 1.1;
 }
 .hero-sub {
   color: var(--ink-soft);
@@ -297,8 +306,8 @@ a { color: inherit; }
   margin: 2px 0 20px;
 }
 .hc-title {
-  font-family: var(--serif);
-  font-weight: 600;
+  font-family: var(--sans);
+  font-weight: 700;
   color: var(--navy);
   font-size: 16.5px;
   margin-bottom: 10px;
@@ -325,7 +334,8 @@ a { color: inherit; }
 .hc-total-row {
   display: flex;
   justify-content: space-between;
-  font-family: var(--serif);
+  font-family: var(--sans);
+  font-weight: 700;
   font-size: 17px;
   color: var(--navy);
   padding: 12px 0;
@@ -560,7 +570,8 @@ a { color: inherit; }
 .cart-total-row {
   display: flex;
   justify-content: space-between;
-  font-family: var(--serif);
+  font-family: var(--sans);
+  font-weight: 700;
   font-size: 19px;
   color: var(--navy);
   padding: 10px 0 16px;
@@ -568,6 +579,6 @@ a { color: inherit; }
 
 /* ===== Larger screens ===== */
 @media (min-width: 640px) {
-  .hero h1 { font-size: 36px; }
+  .hero h1 { font-size: 29px; }
   .item-row { padding: 16px 4px; }
 }
