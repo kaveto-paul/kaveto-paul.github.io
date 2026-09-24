@@ -43,15 +43,28 @@ h1, h2 {
 a { color: inherit; }
 
 /* ===== Header ===== */
+/* This is the "picture covering the top section" — using hero.jpg,
+   cropped from your flyer. Swap hero.jpg for a different photo any
+   time by replacing the file (keep the same name), or point this at
+   a new file. */
 .site-header {
-  background: var(--navy);
+  background-color: var(--navy);
+  background-image:
+    linear-gradient(180deg, rgba(23,35,58,.35) 0%, rgba(23,35,58,.82) 100%),
+    url("hero.jpg");
+  background-size: cover;
+  background-position: center 35%;
   color: #fff;
+  min-height: 118px;
+  display: flex;
+  align-items: center;
 }
 .header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
+  width: 100%;
 }
 .wordmark {
   font-family: var(--serif);
@@ -67,6 +80,12 @@ a { color: inherit; }
   color: #c9cedb;
   letter-spacing: 0.01em;
 }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
 .header-whatsapp {
   display: inline-flex;
   align-items: center;
@@ -80,6 +99,36 @@ a { color: inherit; }
   font-weight: 500;
   white-space: nowrap;
 }
+.header-cart {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.header-cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: #201200;
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 17px;
+  text-align: center;
+}
+.header-cart-badge.zero { opacity: 0.55; }
 
 /* ===== Hero ===== */
 .hero {
@@ -92,6 +141,8 @@ a { color: inherit; }
   padding: 30px 22px 26px;
   box-shadow: 0 1px 0 var(--line);
 }
+/* hero-image is unused now that the banner photo lives on .site-header — kept hidden in case you want a second image later */
+.hero-image { display: none; }
 .hero h1 {
   font-size: 30px;
   letter-spacing: -0.01em;
@@ -229,6 +280,53 @@ a { color: inherit; }
   font-variant-numeric: tabular-nums;
 }
 
+/* ===== House cleaning calculator card ===== */
+.hc-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 2px 0 20px;
+}
+.hc-title {
+  font-family: var(--serif);
+  font-weight: 600;
+  color: var(--navy);
+  font-size: 16.5px;
+  margin-bottom: 10px;
+}
+.hc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  gap: 10px;
+}
+.hc-label { color: var(--ink-soft); }
+.hc-sqm-input {
+  width: 72px;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-size: 14px;
+  text-align: right;
+}
+.hc-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--serif);
+  font-size: 17px;
+  color: var(--navy);
+  padding: 12px 0;
+}
+.hc-card .btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 /* ===== How it works ===== */
 .how { padding: 8px 0 36px; }
 .how-list {
@@ -272,6 +370,16 @@ a { color: inherit; }
 /* ===== Areas ===== */
 .areas { padding: 8px 0 40px; }
 .areas p { color: var(--ink-soft); font-size: 14.5px; }
+.areas-delivery {
+  margin-top: 10px;
+  display: inline-block;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 16px;
+  font-weight: 500;
+  color: var(--navy) !important;
+}
 
 /* ===== Footer ===== */
 .site-footer {
@@ -288,6 +396,24 @@ a { color: inherit; }
 }
 .site-footer p { margin: 2px 0; }
 .site-footer a { color: var(--gold); text-decoration: none; }
+
+/* ===== Floating WhatsApp bubble ===== */
+.whatsapp-bubble {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--sage);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(23,35,58,0.3);
+  z-index: 25;
+  transition: bottom 0.2s ease;
+}
+.whatsapp-bubble.raised { bottom: 88px; }
 
 /* ===== Sticky cart bar ===== */
 .cart-bar {
@@ -390,6 +516,16 @@ a { color: inherit; }
   flex: 0 0 auto;
   min-width: 58px;
   text-align: right;
+}
+.cart-item-remove {
+  flex: 0 0 auto;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0 0 4px;
 }
 
 .cart-empty {

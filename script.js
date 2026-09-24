@@ -7,36 +7,34 @@
    freely; the site rebuilds itself from this list.
    ========================================================= */
 
-const WHATSAPP_NUMBER = "264812797483"; // <-- REPLACE with your real WhatsApp number, no + or spaces (264 = Namibia code)
+const WHATSAPP_NUMBER = "264812797483"; // Business WhatsApp number
 
 const CATEGORIES = [
   {
     id: "wash-fold",
     label: "Wash & Fold",
-    note: "Everyday clothing, bedsheets and towels.",
+    note: "Everyday clothing, bedsheets and towels — priced per basket.",
     items: [
-      { name: "Mixed wash", unit: "per kg", price: 25 },
-      { name: "Wash & iron", unit: "per kg", price: 35 },
+      { name: "Small basket", unit: "per basket", price: 90 },
+      { name: "Big basket", unit: "per basket", price: 150 },
     ],
   },
   {
-    id: "ironing",
-    label: "Ironing Only",
-    note: "For items that are already clean.",
+    id: "wash-iron",
+    label: "Wash & Iron",
+    note: "Everyday laundry that also needs ironing — priced per basket.",
     items: [
-      { name: "Shirt", unit: "per item", price: 15 },
-      { name: "Trousers", unit: "per item", price: 15 },
-      { name: "Dress", unit: "per item", price: 20 },
+      { name: "Small basket", unit: "per basket", price: 110 },
+      { name: "Big basket", unit: "per basket", price: 180 },
     ],
   },
   {
-    id: "dry-cleaning",
-    label: "Dry Cleaning",
-    note: "For delicate items and formal wear.",
+    id: "shoe-cleaning",
+    label: "Shoe Cleaning",
+    note: "Washing, polishing and renewing — priced per pair.",
     items: [
-      { name: "Suit, 2-piece", unit: "per item", price: 120 },
-      { name: "Jacket / blazer", unit: "per item", price: 70 },
-      { name: "Formal dress", unit: "per item", price: 90 },
+      { name: "Wash & polish", unit: "per pair", price: 45 },
+      { name: "Full renewal (wash, polish, sole care)", unit: "per pair", price: 80 },
     ],
   },
   {
@@ -51,13 +49,18 @@ const CATEGORIES = [
   },
   {
     id: "duvets",
-    label: "Duvets & Bulky",
-    note: "Larger items needing extra care.",
+    label: "Duvets, Blankets & Throws",
+    note: "Larger bedding items needing extra care — priced by size.",
     items: [
-      { name: "Duvet, single", unit: "per item", price: 80 },
-      { name: "Duvet, double", unit: "per item", price: 100 },
-      { name: "Duvet, king", unit: "per item", price: 120 },
-      { name: "Blanket", unit: "per item", price: 60 },
+      { name: "Duvet — Large", unit: "per item", price: 120 },
+      { name: "Duvet — Medium", unit: "per item", price: 100 },
+      { name: "Duvet — Small", unit: "per item", price: 80 },
+      { name: "Blanket — Large", unit: "per item", price: 100 },
+      { name: "Blanket — Medium", unit: "per item", price: 80 },
+      { name: "Blanket — Small", unit: "per item", price: 60 },
+      { name: "Throw — Large", unit: "per item", price: 80 },
+      { name: "Throw — Medium", unit: "per item", price: 70 },
+      { name: "Throw — Small", unit: "per item", price: 50 },
     ],
   },
   {
@@ -65,13 +68,20 @@ const CATEGORIES = [
     label: "Home Services",
     note: "House and upholstery cleaning, at your home.",
     items: [
-      { name: "House cleaning, 1–2 bed", unit: "per visit", price: 350 },
-      { name: "House cleaning, 3+ bed", unit: "per visit", price: 500 },
       { name: "Sofa, 2-seater", unit: "per item", price: 150 },
       { name: "Sofa, 3-seater", unit: "per item", price: 200 },
     ],
   },
 ];
+
+/* House cleaning is priced by configuration, not a flat per-item price —
+   EDIT THESE PLACEHOLDER RATES to your real ones. */
+const HOUSE_CLEANING_RATES = {
+  perBedroom: 150,
+  perEnsuite: 50,
+  perWalkIn: 40,
+  perSqm: 8,
+};
 
 /* ===================== Cart state ===================== */
 
@@ -94,6 +104,23 @@ function saveCart(cart) {
 
 let cart = loadCart(); // { "categoryId::itemName": qty }
 
+const CUSTOM_CART_KEY = "gman_cart_custom_v1";
+function loadCustomCart() {
+  try {
+    return JSON.parse(localStorage.getItem(CUSTOM_CART_KEY)) || [];
+  } catch {
+    return [];
+  }
+}
+function saveCustomCart(items) {
+  try {
+    localStorage.setItem(CUSTOM_CART_KEY, JSON.stringify(items));
+  } catch {
+    /* storage unavailable — cart just won't persist across visits */
+  }
+}
+let customCart = loadCustomCart(); // [{ id, label, price }]
+
 function itemKey(catId, itemName) {
   return catId + "::" + itemName;
 }
@@ -113,10 +140,11 @@ function cartTotal() {
     const found = findItem(key);
     if (found) total += found.item.price * cart[key];
   }
+  customCart.forEach((c) => (total += c.price));
   return total;
 }
 function cartCount() {
-  return Object.values(cart).reduce((a, b) => a + b, 0);
+  return Object.values(cart).reduce((a, b) => a + b, 0) + customCart.length;
 }
 
 function fmt(n) {
@@ -151,6 +179,10 @@ function renderItems() {
 
   const list = document.getElementById("item-list");
   list.innerHTML = "";
+
+  if (cat.id === "home-services") {
+    list.appendChild(buildHouseCleaningCalculator());
+  }
 
   cat.items.forEach((item) => {
     const key = itemKey(cat.id, item.name);
@@ -190,21 +222,158 @@ function changeQty(key, delta) {
   renderCart();
 }
 
+/* ===================== House cleaning calculator ===================== */
+/* Priced by configuration: per bedroom, plus add-ons for ensuite and
+   walk-in closet bedrooms, plus living/open area by square metre. */
+
+let hcConfig = { bedrooms: 0, ensuites: 0, walkins: 0, sqm: 0 };
+
+function houseCleaningTotal() {
+  const r = HOUSE_CLEANING_RATES;
+  return (
+    hcConfig.bedrooms * r.perBedroom +
+    hcConfig.ensuites * r.perEnsuite +
+    hcConfig.walkins * r.perWalkIn +
+    hcConfig.sqm * r.perSqm
+  );
+}
+
+function hcStepper(labelText, field, max) {
+  const row = document.createElement("div");
+  row.className = "hc-row";
+  row.innerHTML = `
+    <span class="hc-label">${labelText}</span>
+    <span class="stepper">
+      <button type="button" data-field="${field}" data-delta="-1" aria-label="Decrease ${labelText}">–</button>
+      <span class="qty" data-display="${field}">${hcConfig[field]}</span>
+      <button type="button" data-field="${field}" data-delta="1" aria-label="Increase ${labelText}">+</button>
+    </span>
+  `;
+  row.querySelectorAll("button").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const delta = Number(btn.dataset.delta);
+      let next = hcConfig[field] + delta;
+      if (next < 0) next = 0;
+      if (typeof max === "number" && next > max) next = max;
+      hcConfig[field] = next;
+      // keep ensuite/walk-in counts sensible relative to bedroom count
+      if (field === "bedrooms") {
+        if (hcConfig.ensuites > next) hcConfig.ensuites = next;
+        if (hcConfig.walkins > next) hcConfig.walkins = next;
+      }
+      refreshHcCard();
+    });
+  });
+  return row;
+}
+
+let hcCardEl = null;
+
+function buildHouseCleaningCalculator() {
+  const card = document.createElement("div");
+  card.className = "hc-card";
+  hcCardEl = card;
+  renderHcCardContents();
+  return card;
+}
+
+function renderHcCardContents() {
+  hcCardEl.innerHTML = "";
+  const title = document.createElement("div");
+  title.className = "hc-title";
+  title.textContent = "House Cleaning — build your quote";
+  hcCardEl.appendChild(title);
+
+  hcCardEl.appendChild(hcStepper("Bedrooms", "bedrooms"));
+  hcCardEl.appendChild(hcStepper("...with ensuite", "ensuites", hcConfig.bedrooms));
+  hcCardEl.appendChild(hcStepper("...with walk-in closet", "walkins", hcConfig.bedrooms));
+
+  const sqmRow = document.createElement("div");
+  sqmRow.className = "hc-row";
+  sqmRow.innerHTML = `
+    <span class="hc-label">Living / open area (m²)</span>
+    <input type="number" min="0" step="1" class="hc-sqm-input" id="hc-sqm-input" value="${hcConfig.sqm}">
+  `;
+  hcCardEl.appendChild(sqmRow);
+  hcCardEl.querySelector("#hc-sqm-input").addEventListener("input", (e) => {
+    const v = Math.max(0, Number(e.target.value) || 0);
+    hcConfig.sqm = v;
+    refreshHcTotalOnly();
+  });
+
+  const totalRow = document.createElement("div");
+  totalRow.className = "hc-total-row";
+  totalRow.innerHTML = `<span>Estimated total</span><span id="hc-total">${fmt(houseCleaningTotal())}</span>`;
+  hcCardEl.appendChild(totalRow);
+
+  const addBtn = document.createElement("button");
+  addBtn.type = "button";
+  addBtn.className = "btn btn-primary btn-block";
+  addBtn.textContent = "Add house cleaning to basket";
+  addBtn.disabled = hcConfig.bedrooms === 0 && hcConfig.sqm === 0;
+  addBtn.addEventListener("click", addHouseCleaningToCart);
+  hcCardEl.appendChild(addBtn);
+}
+
+function refreshHcCard() {
+  renderHcCardContents();
+}
+function refreshHcTotalOnly() {
+  const totalEl = hcCardEl.querySelector("#hc-total");
+  if (totalEl) totalEl.textContent = fmt(houseCleaningTotal());
+  const addBtn = hcCardEl.querySelector(".btn-primary");
+  if (addBtn) addBtn.disabled = hcConfig.bedrooms === 0 && hcConfig.sqm === 0;
+}
+
+function addHouseCleaningToCart() {
+  const parts = [];
+  parts.push(`${hcConfig.bedrooms} bedroom${hcConfig.bedrooms === 1 ? "" : "s"}`);
+  if (hcConfig.ensuites) parts.push(`${hcConfig.ensuites} ensuite`);
+  if (hcConfig.walkins) parts.push(`${hcConfig.walkins} walk-in closet`);
+  if (hcConfig.sqm) parts.push(`${hcConfig.sqm}m² open area`);
+
+  customCart.push({
+    id: "hc-" + Date.now(),
+    label: "House cleaning — " + parts.join(", "),
+    price: houseCleaningTotal(),
+  });
+  saveCustomCart(customCart);
+
+  hcConfig = { bedrooms: 0, ensuites: 0, walkins: 0, sqm: 0 };
+  renderHcCardContents();
+  renderCart();
+}
+
+function removeCustomItem(id) {
+  customCart = customCart.filter((c) => c.id !== id);
+  saveCustomCart(customCart);
+  renderCart();
+}
+
 function renderCart() {
   const count = cartCount();
   const total = cartTotal();
 
   const bar = document.getElementById("cart-bar");
-  bar.classList.toggle("visible", count > 0);
+  const barVisible = count > 0;
+  bar.classList.toggle("visible", barVisible);
   document.getElementById("cart-bar-count").textContent = count + (count === 1 ? " item" : " items");
   document.getElementById("cart-bar-total").textContent = fmt(total);
+
+  // Keep the floating WhatsApp bubble from overlapping the cart bar
+  document.getElementById("whatsapp-bubble-link").classList.toggle("raised", barVisible);
+
+  // Header cart icon badge — always visible, even at 0
+  const badge = document.getElementById("header-cart-badge");
+  badge.textContent = count;
+  badge.classList.toggle("zero", count === 0);
 
   const itemsList = document.getElementById("cart-items");
   const emptyMsg = document.getElementById("cart-empty");
   itemsList.innerHTML = "";
 
   const keys = Object.keys(cart);
-  emptyMsg.style.display = keys.length === 0 ? "block" : "none";
+  emptyMsg.style.display = keys.length === 0 && customCart.length === 0 ? "block" : "none";
 
   keys.forEach((key) => {
     const found = findItem(key);
@@ -217,6 +386,18 @@ function renderCart() {
       <span class="qty">×${qty}</span>
       <span class="line-total">${fmt(found.item.price * qty)}</span>
     `;
+    itemsList.appendChild(li);
+  });
+
+  customCart.forEach((c) => {
+    const li = document.createElement("li");
+    li.className = "cart-item-row";
+    li.innerHTML = `
+      <span class="name">${c.label}</span>
+      <span class="line-total">${fmt(c.price)}</span>
+      <button type="button" class="cart-item-remove" aria-label="Remove">&times;</button>
+    `;
+    li.querySelector(".cart-item-remove").addEventListener("click", () => removeCustomItem(c.id));
     itemsList.appendChild(li);
   });
 
@@ -234,12 +415,15 @@ function buildBookingMessage() {
     const qty = cart[key];
     lines.push(`- ${found.item.name} x${qty} (${fmt(found.item.price * qty)})`);
   });
+  customCart.forEach((c) => {
+    lines.push(`- ${c.label} (${fmt(c.price)})`);
+  });
   lines.push("", `Total: ${fmt(cartTotal())}`, "", "My address / pickup details: ");
   return lines.join("\n");
 }
 
 function updateWhatsappLink() {
-  const hasItems = Object.keys(cart).length > 0;
+  const hasItems = Object.keys(cart).length > 0 || customCart.length > 0;
   const message = hasItems
     ? buildBookingMessage()
     : "Hi G-man's, I'd like to ask about your laundry and home cleaning services.";
@@ -247,6 +431,7 @@ function updateWhatsappLink() {
   document.getElementById("whatsapp-send").href = url;
   document.getElementById("header-whatsapp-link").href = url;
   document.getElementById("footer-whatsapp-link").href = url;
+  document.getElementById("whatsapp-bubble-link").href = url;
 }
 
 /* ===================== Cart drawer open/close ===================== */
@@ -261,13 +446,16 @@ function closeCart() {
   drawer.setAttribute("aria-hidden", "true");
 }
 document.getElementById("cart-bar").addEventListener("click", openCart);
+document.getElementById("header-cart-btn").addEventListener("click", openCart);
 document.getElementById("cart-close").addEventListener("click", closeCart);
 drawer.addEventListener("click", (e) => {
   if (e.target === drawer) closeCart();
 });
 document.getElementById("cart-clear").addEventListener("click", () => {
   cart = {};
+  customCart = [];
   saveCart(cart);
+  saveCustomCart(customCart);
   renderItems();
   renderCart();
 });
