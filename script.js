@@ -31,10 +31,18 @@ const CATEGORIES = [
   {
     id: "shoe-cleaning",
     label: "Shoe Cleaning",
-    note: "Washing, polishing and renewing — priced per pair.",
+    note: "Washing sneakers and everyday shoes — priced per pair.",
     items: [
-      { name: "Wash & polish", unit: "per pair", price: 45 },
-      { name: "Full renewal (wash, polish, sole care)", unit: "per pair", price: 80 },
+      { name: "Sneaker wash", unit: "per pair", price: 45 },
+      { name: "Full renewal (deep wash, sole care)", unit: "per pair", price: 80 },
+    ],
+  },
+  {
+    id: "shoe-polishing",
+    label: "Shoe Polishing",
+    note: "Leather and formal shoes — priced per pair.",
+    items: [
+      { name: "Polish", unit: "per pair", price: 35 },
     ],
   },
   {

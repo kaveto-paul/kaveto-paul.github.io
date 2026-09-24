@@ -1,16 +1,20 @@
 /* ===== Tokens ===== */
+/* Palette matches the flyer: slate blue-grey background, near-black
+   bold headline, white pill badges. */
 :root {
-  --paper: #fbfaf6;
-  --ink: #1c1a16;
-  --ink-soft: #5b564c;
-  --navy: #17233a;
-  --navy-soft: #2b3a56;
-  --gold: #c98a34;
-  --gold-deep: #a8701f;
+  --paper: #c7d2de;
+  --paper-deep: #b9c6d6;
+  --ink: #111214;
+  --ink-soft: #4b5663;
+  --navy: #111214;
+  --navy-soft: #2a3138;
+  --gold: #111214;
+  --gold-deep: #000000;
   --sage: #52705f;
-  --line: #e4dfd3;
+  --line: #a7b6c6;
   --radius: 10px;
-  --serif: "Fraunces", Georgia, serif;
+  --display: "Anton", "Archivo Black", sans-serif;
+  --serif: "Anton", "Archivo Black", sans-serif;
   --sans: "IBM Plex Sans", -apple-system, Segoe UI, Roboto, sans-serif;
 }
 
@@ -50,7 +54,7 @@ a { color: inherit; }
 .site-header {
   background-color: var(--navy);
   background-image:
-    linear-gradient(180deg, rgba(23,35,58,.35) 0%, rgba(23,35,58,.82) 100%),
+    linear-gradient(180deg, rgba(17,18,20,.35) 0%, rgba(17,18,20,.82) 100%),
     url("hero.jpg");
   background-size: cover;
   background-position: center 35%;
@@ -121,10 +125,10 @@ a { color: inherit; }
   height: 17px;
   padding: 0 3px;
   border-radius: 999px;
-  background: var(--gold);
-  color: #201200;
+  background: var(--paper-deep);
+  color: var(--ink);
   font-size: 10.5px;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 17px;
   text-align: center;
 }
@@ -141,11 +145,34 @@ a { color: inherit; }
   padding: 30px 22px 26px;
   box-shadow: 0 1px 0 var(--line);
 }
-/* hero-image is unused now that the banner photo lives on .site-header — kept hidden in case you want a second image later */
-.hero-image { display: none; }
+
+/* Circular photo badge, overlapping the header/hero boundary like the flyer */
+.hero-badge-outer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -70px;
+  margin-bottom: -54px;
+  position: relative;
+  z-index: 2;
+}
+.hero-badge {
+  width: 108px;
+  height: 108px;
+}
+.hero-badge img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--paper);
+  box-shadow: 0 6px 16px rgba(17,18,20,0.28);
+}
 .hero h1 {
-  font-size: 30px;
-  letter-spacing: -0.01em;
+  font-size: 34px;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
 }
 .hero-sub {
   color: var(--ink-soft);
@@ -165,8 +192,9 @@ a { color: inherit; }
   cursor: pointer;
 }
 .btn-primary {
-  background: var(--gold);
-  color: #201200;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 600;
 }
 .btn-primary:active { background: var(--gold-deep); }
 .btn-block { display: block; width: 100%; text-align: center; }
@@ -198,11 +226,13 @@ a { color: inherit; }
   flex: 0 0 auto;
   background: #fff;
   border: 1px solid var(--line);
-  color: var(--ink-soft);
+  color: var(--ink);
   padding: 9px 15px;
   border-radius: 999px;
-  font-size: 13.5px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   cursor: pointer;
   white-space: nowrap;
 }
@@ -357,8 +387,14 @@ a { color: inherit; }
   justify-content: center;
   font-family: var(--sans);
 }
+.how-payments {
+  margin-top: 14px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+.how-payments strong { color: var(--ink); }
 .how-note {
-  margin-top: 16px;
+  margin-top: 10px;
   padding: 12px 14px;
   background: #fff;
   border: 1px solid var(--line);
@@ -382,10 +418,18 @@ a { color: inherit; }
 }
 
 /* ===== Footer ===== */
+/* Bottom banner photo — stretches across the full bottom section.
+   Swap footer-bg.jpg for a different photo any time by replacing the
+   file (keep the same name). */
 .site-footer {
-  background: var(--navy);
-  color: #c9cedb;
-  padding: 26px 0 100px;
+  background-color: var(--navy);
+  background-image:
+    linear-gradient(180deg, rgba(17,18,20,.55) 0%, rgba(17,18,20,.82) 100%),
+    url("footer-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  color: #d8dee5;
+  padding: 34px 0 110px;
   font-size: 13.5px;
 }
 .footer-name {
@@ -395,7 +439,7 @@ a { color: inherit; }
   margin: 0 0 4px;
 }
 .site-footer p { margin: 2px 0; }
-.site-footer a { color: var(--gold); text-decoration: none; }
+.site-footer a { color: var(--paper-deep); text-decoration: none; }
 
 /* ===== Floating WhatsApp bubble ===== */
 .whatsapp-bubble {
@@ -409,7 +453,7 @@ a { color: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 18px rgba(23,35,58,0.3);
+  box-shadow: 0 6px 18px rgba(17,18,20,0.3);
   z-index: 25;
   transition: bottom 0.2s ease;
 }
@@ -435,11 +479,11 @@ a { color: inherit; }
   font-size: 14.5px;
   font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(23,35,58,0.28);
+  box-shadow: 0 8px 24px rgba(17,18,20,0.28);
   z-index: 20;
 }
 .cart-bar.visible { display: flex; }
-#cart-bar-total { color: var(--gold); font-variant-numeric: tabular-nums; }
+#cart-bar-total { color: var(--paper-deep); font-variant-numeric: tabular-nums; }
 
 /* ===== Cart drawer ===== */
 .cart-drawer {
@@ -457,7 +501,7 @@ a { color: inherit; }
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(23,35,58,0.4);
+  background: rgba(17,18,20,0.4);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
