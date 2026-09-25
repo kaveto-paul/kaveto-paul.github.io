@@ -15,8 +15,8 @@ const CATEGORIES = [
     label: "Wash & Fold",
     note: "Everyday clothing, bedsheets and towels — priced per basket.",
     items: [
-      { name: "Small basket", unit: "per basket", price: 90 },
-      { name: "Big basket", unit: "per basket", price: 150 },
+      { name: "Small basket", unit: "per basket", price: 110 },
+      { name: "Big basket", unit: "per basket", price: 160 },
     ],
   },
   {
@@ -24,8 +24,8 @@ const CATEGORIES = [
     label: "Wash & Iron",
     note: "Everyday laundry that also needs ironing — priced per basket.",
     items: [
-      { name: "Small basket", unit: "per basket", price: 110 },
-      { name: "Big basket", unit: "per basket", price: 180 },
+      { name: "Small basket", unit: "per basket", price: 180 },
+      { name: "Big basket", unit: "per basket", price: 250 },
     ],
   },
   {
@@ -33,9 +33,10 @@ const CATEGORIES = [
     label: "Shoe Care",
     note: "All shoe types — priced per pair.",
     items: [
-      { name: "Wash", unit: "per pair", price: 45 },
+      { name: "Wash — coloured shoes", unit: "per pair", price: 50 },
+      { name: "Wash — white shoes", unit: "per pair", price: 70 },
       { name: "Polishing", unit: "per pair", price: 35 },
-      { name: "Full renewal (deep wash, polish, sole care)", unit: "per pair", price: 80 },
+      { name: "Renewal (Restoration)", unit: "per pair", price: 200 },
     ],
   },
   {
@@ -43,25 +44,22 @@ const CATEGORIES = [
     label: "Household Textiles",
     note: "Curtains, bedding and covers.",
     items: [
-      { name: "Curtain, per panel", unit: "per item", price: 45 },
+      { name: "Curtain, per panel", unit: "per item", price: 60 },
       { name: "Bedsheet", unit: "per item", price: 30 },
-      { name: "Duvet cover", unit: "per item", price: 40 },
+      { name: "Duvet cover", unit: "per item", price: 50 },
     ],
   },
   {
-    id: "duvets",
-    label: "Duvets, Blankets & Throws",
+    id: "blankets-throws",
+    label: "Blankets & Throws",
     note: "Larger bedding items needing extra care — priced by size.",
     items: [
-      { name: "Duvet — Large", unit: "per item", price: 120 },
-      { name: "Duvet — Medium", unit: "per item", price: 100 },
-      { name: "Duvet — Small", unit: "per item", price: 80 },
-      { name: "Blanket — Large", unit: "per item", price: 100 },
-      { name: "Blanket — Medium", unit: "per item", price: 80 },
-      { name: "Blanket — Small", unit: "per item", price: 60 },
+      { name: "Blanket — Large", unit: "per item", price: 150 },
+      { name: "Blanket — Medium", unit: "per item", price: 100 },
+      { name: "Blanket — Small", unit: "per item", price: 80 },
       { name: "Throw — Large", unit: "per item", price: 80 },
       { name: "Throw — Medium", unit: "per item", price: 70 },
-      { name: "Throw — Small", unit: "per item", price: 50 },
+      { name: "Throw — Small", unit: "per item", price: 60 },
     ],
   },
   {
@@ -71,17 +69,21 @@ const CATEGORIES = [
     items: [
       { name: "Sofa, 2-seater", unit: "per item", price: 150 },
       { name: "Sofa, 3-seater", unit: "per item", price: 200 },
+      { name: "Couch — Large", unit: "per item", price: 200 },
+      { name: "Couch — Medium", unit: "per item", price: 150 },
+      { name: "Couch — Small", unit: "per item", price: 80 },
+      { name: "Bathroom & Toilet (W/C)", unit: "per m²", price: 35 },
     ],
   },
 ];
 
 /* House cleaning is priced by configuration, not a flat per-item price —
-   EDIT THESE PLACEHOLDER RATES to your real ones. */
+   EDIT THESE RATES here if they ever change. */
 const HOUSE_CLEANING_RATES = {
-  perBedroom: 150,
-  perEnsuite: 50,
-  perWalkIn: 40,
-  perSqm: 8,
+  perBedroom: 250,
+  perEnsuite: 130,
+  perWalkIn: 150,
+  perSqm: 35,
 };
 
 /* ===================== Cart state ===================== */
