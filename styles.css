@@ -349,6 +349,19 @@ a { color: inherit; }
   cursor: not-allowed;
 }
 
+.measure-note {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.measure-note p { margin: 0 0 8px; }
+.measure-note p:last-child { margin-bottom: 0; }
+.measure-note strong { color: var(--ink); }
+
 /* ===== How it works ===== */
 .how { padding: 8px 0 36px; }
 .how-list {

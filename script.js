@@ -211,6 +211,20 @@ function renderItems() {
     li.querySelector('[data-action="minus"]').addEventListener("click", () => changeQty(key, -1));
     list.appendChild(li);
   });
+
+  if (cat.id === "home-services") {
+    list.appendChild(buildMeasuringNote());
+  }
+}
+
+function buildMeasuringNote() {
+  const note = document.createElement("div");
+  note.className = "measure-note";
+  note.innerHTML = `
+    <p><strong>Measuring your space:</strong> if your phone supports AR, a measuring-tape app makes this quick — try <strong>AR Ruler App</strong> (Android) or the built-in <strong>Measure</strong> app (iPhone).</p>
+    <p>No AR support? No problem — measure length × width with a regular tape measure, then multiply the two numbers using your phone's ordinary Calculator app to get the square metres.</p>
+  `;
+  return note;
 }
 
 function changeQty(key, delta) {
@@ -233,7 +247,12 @@ let hcConfig = { bedrooms: 0, ensuites: 0, walkins: 0, sqm: 0, bathroomSqm: 0 };
 
 function houseCleaningTotal() {
   const r = HOUSE_CLEANING_RATES;
-  const bathroomCharge = hcConfig.bathroomSqm > 0 ? r.bathroomBase + hcConfig.bathroomSqm * r.perSqm : 0;
+  const bathroomCharge =
+    hcConfig.bathroomSqm > 2
+      ? r.bathroomBase + (hcConfig.bathroomSqm - 2) * r.perSqm
+      : hcConfig.bathroomSqm > 0
+      ? r.bathroomBase
+      : 0;
   return (
     hcConfig.bedrooms * r.perBedroom +
     hcConfig.ensuites * r.perEnsuite +
@@ -309,7 +328,7 @@ function renderHcCardContents() {
   const bathroomRow = document.createElement("div");
   bathroomRow.className = "hc-row";
   bathroomRow.innerHTML = `
-    <span class="hc-label">Bathroom &amp; Toilet, W/C (m²)<br><span class="hc-rate">N$${HOUSE_CLEANING_RATES.bathroomBase} + N$${HOUSE_CLEANING_RATES.perSqm}/m²</span></span>
+    <span class="hc-label">Bathroom &amp; Toilet, W/C (m²)<br><span class="hc-rate">N$${HOUSE_CLEANING_RATES.bathroomBase} up to 2m², then N$${HOUSE_CLEANING_RATES.perSqm}/m²</span></span>
     <input type="number" min="0" step="1" class="hc-sqm-input" id="hc-bathroom-input" value="${hcConfig.bathroomSqm}">
   `;
   hcCardEl.appendChild(bathroomRow);
