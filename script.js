@@ -83,6 +83,7 @@ const HOUSE_CLEANING_RATES = {
   perEnsuite: 130,
   perWalkIn: 150,
   perSqm: 35,
+  bathroomBase: 130,
 };
 
 /* ===================== Cart state ===================== */
@@ -232,12 +233,13 @@ let hcConfig = { bedrooms: 0, ensuites: 0, walkins: 0, sqm: 0, bathroomSqm: 0 };
 
 function houseCleaningTotal() {
   const r = HOUSE_CLEANING_RATES;
+  const bathroomCharge = hcConfig.bathroomSqm > 0 ? r.bathroomBase + hcConfig.bathroomSqm * r.perSqm : 0;
   return (
     hcConfig.bedrooms * r.perBedroom +
     hcConfig.ensuites * r.perEnsuite +
     hcConfig.walkins * r.perWalkIn +
     hcConfig.sqm * r.perSqm +
-    hcConfig.bathroomSqm * r.perSqm
+    bathroomCharge
   );
 }
 
@@ -307,7 +309,7 @@ function renderHcCardContents() {
   const bathroomRow = document.createElement("div");
   bathroomRow.className = "hc-row";
   bathroomRow.innerHTML = `
-    <span class="hc-label">Bathroom &amp; Toilet, W/C (m²)<br><span class="hc-rate">N$${HOUSE_CLEANING_RATES.perSqm}/m²</span></span>
+    <span class="hc-label">Bathroom &amp; Toilet, W/C (m²)<br><span class="hc-rate">N$${HOUSE_CLEANING_RATES.bathroomBase} + N$${HOUSE_CLEANING_RATES.perSqm}/m²</span></span>
     <input type="number" min="0" step="1" class="hc-sqm-input" id="hc-bathroom-input" value="${hcConfig.bathroomSqm}">
   `;
   hcCardEl.appendChild(bathroomRow);
