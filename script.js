@@ -72,7 +72,6 @@ const CATEGORIES = [
       { name: "Couch — Large", unit: "per item", price: 200 },
       { name: "Couch — Medium", unit: "per item", price: 150 },
       { name: "Couch — Small", unit: "per item", price: 80 },
-      { name: "Bathroom & Toilet (W/C)", unit: "per m²", price: 35 },
     ],
   },
 ];
@@ -229,7 +228,7 @@ function changeQty(key, delta) {
 /* Priced by configuration: per bedroom, plus add-ons for ensuite and
    walk-in closet bedrooms, plus living/open area by square metre. */
 
-let hcConfig = { bedrooms: 0, ensuites: 0, walkins: 0, sqm: 0 };
+let hcConfig = { bedrooms: 0, ensuites: 0, walkins: 0, sqm: 0, bathroomSqm: 0 };
 
 function houseCleaningTotal() {
   const r = HOUSE_CLEANING_RATES;
@@ -237,7 +236,8 @@ function houseCleaningTotal() {
     hcConfig.bedrooms * r.perBedroom +
     hcConfig.ensuites * r.perEnsuite +
     hcConfig.walkins * r.perWalkIn +
-    hcConfig.sqm * r.perSqm
+    hcConfig.sqm * r.perSqm +
+    hcConfig.bathroomSqm * r.perSqm
   );
 }
 
@@ -294,13 +294,26 @@ function renderHcCardContents() {
   const sqmRow = document.createElement("div");
   sqmRow.className = "hc-row";
   sqmRow.innerHTML = `
-    <span class="hc-label">Living / open area (m²)</span>
+    <span class="hc-label">Living / open area (m²)<br><span class="hc-rate">N$${HOUSE_CLEANING_RATES.perSqm}/m²</span></span>
     <input type="number" min="0" step="1" class="hc-sqm-input" id="hc-sqm-input" value="${hcConfig.sqm}">
   `;
   hcCardEl.appendChild(sqmRow);
   hcCardEl.querySelector("#hc-sqm-input").addEventListener("input", (e) => {
     const v = Math.max(0, Number(e.target.value) || 0);
     hcConfig.sqm = v;
+    refreshHcTotalOnly();
+  });
+
+  const bathroomRow = document.createElement("div");
+  bathroomRow.className = "hc-row";
+  bathroomRow.innerHTML = `
+    <span class="hc-label">Bathroom &amp; Toilet, W/C (m²)<br><span class="hc-rate">N$${HOUSE_CLEANING_RATES.perSqm}/m²</span></span>
+    <input type="number" min="0" step="1" class="hc-sqm-input" id="hc-bathroom-input" value="${hcConfig.bathroomSqm}">
+  `;
+  hcCardEl.appendChild(bathroomRow);
+  hcCardEl.querySelector("#hc-bathroom-input").addEventListener("input", (e) => {
+    const v = Math.max(0, Number(e.target.value) || 0);
+    hcConfig.bathroomSqm = v;
     refreshHcTotalOnly();
   });
 
@@ -313,7 +326,7 @@ function renderHcCardContents() {
   addBtn.type = "button";
   addBtn.className = "btn btn-primary btn-block";
   addBtn.textContent = "Add house cleaning to basket";
-  addBtn.disabled = hcConfig.bedrooms === 0 && hcConfig.sqm === 0;
+  addBtn.disabled = hcConfig.bedrooms === 0 && hcConfig.sqm === 0 && hcConfig.bathroomSqm === 0;
   addBtn.addEventListener("click", addHouseCleaningToCart);
   hcCardEl.appendChild(addBtn);
 }
@@ -325,15 +338,16 @@ function refreshHcTotalOnly() {
   const totalEl = hcCardEl.querySelector("#hc-total");
   if (totalEl) totalEl.textContent = fmt(houseCleaningTotal());
   const addBtn = hcCardEl.querySelector(".btn-primary");
-  if (addBtn) addBtn.disabled = hcConfig.bedrooms === 0 && hcConfig.sqm === 0;
+  if (addBtn) addBtn.disabled = hcConfig.bedrooms === 0 && hcConfig.sqm === 0 && hcConfig.bathroomSqm === 0;
 }
 
 function addHouseCleaningToCart() {
   const parts = [];
-  parts.push(`${hcConfig.bedrooms} bedroom${hcConfig.bedrooms === 1 ? "" : "s"}`);
+  if (hcConfig.bedrooms) parts.push(`${hcConfig.bedrooms} bedroom${hcConfig.bedrooms === 1 ? "" : "s"}`);
   if (hcConfig.ensuites) parts.push(`${hcConfig.ensuites} ensuite`);
   if (hcConfig.walkins) parts.push(`${hcConfig.walkins} walk-in closet`);
   if (hcConfig.sqm) parts.push(`${hcConfig.sqm}m² open area`);
+  if (hcConfig.bathroomSqm) parts.push(`${hcConfig.bathroomSqm}m² bathroom & toilet`);
 
   customCart.push({
     id: "hc-" + Date.now(),
@@ -342,7 +356,7 @@ function addHouseCleaningToCart() {
   });
   saveCustomCart(customCart);
 
-  hcConfig = { bedrooms: 0, ensuites: 0, walkins: 0, sqm: 0 };
+  hcConfig = { bedrooms: 0, ensuites: 0, walkins: 0, sqm: 0, bathroomSqm: 0 };
   renderHcCardContents();
   renderCart();
 }
