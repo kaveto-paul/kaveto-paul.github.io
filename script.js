@@ -13,7 +13,7 @@ const CATEGORIES = [
   {
     id: "wash-fold",
     label: "Wash & Fold",
-    note: "Everyday clothing, bedsheets and towels — priced per basket.",
+    note: "Everyday clothing, pillow cases and towels — priced per basket.",
     items: [
       { name: "Small basket", unit: "per basket", price: 110 },
       { name: "Big basket", unit: "per basket", price: 160 },
@@ -36,7 +36,7 @@ const CATEGORIES = [
       { name: "Wash — coloured shoes", unit: "per pair", price: 50 },
       { name: "Wash — white shoes", unit: "per pair", price: 70 },
       { name: "Polishing", unit: "per pair", price: 35 },
-      { name: "Renewal (Restoration)", unit: "per pair", price: 200 },
+      { name: "Restoration (Renewal)", unit: "per pair", price: 200 },
     ],
   },
   {
@@ -69,6 +69,7 @@ const CATEGORIES = [
     items: [
       { name: "Sofa, 2-seater", unit: "per item", price: 150 },
       { name: "Sofa, 3-seater", unit: "per item", price: 200 },
+      { name: "Sofa, Corner-unit", unit: "per item", price: 250 },
       { name: "Couch — Large", unit: "per item", price: 200 },
       { name: "Couch — Medium", unit: "per item", price: 150 },
       { name: "Couch — Small", unit: "per item", price: 80 },
