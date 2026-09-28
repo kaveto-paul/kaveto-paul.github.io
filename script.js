@@ -123,18 +123,6 @@ const CATEGORIES = [
         ],
       },
       {
-        id: "kitchen",
-        label: "Kitchen & Dining",
-        items: [
-          { name: "Tea towel", price: 8 },
-          { name: "Apron", price: 15 },
-          { name: "Oven glove", price: 10 },
-          { name: "Napkin", price: 8 },
-          { name: "Tablecloth (up to 2m)", price: 35 },
-          { name: "Tablecloth (up to 4m)", price: 60 },
-        ],
-      },
-      {
         id: "accessories",
         label: "Accessories",
         items: [
@@ -220,7 +208,6 @@ const CATEGORIES = [
           { name: "Work trousers", price: 30 },
           { name: "Work overalls", price: 45 },
           { name: "Scrubs (top or pants)", price: 28 },
-          { name: "Kitchen / chef jacket", price: 32 },
         ],
       },
       {
@@ -254,10 +241,6 @@ const CATEGORIES = [
           { name: "Cushion cover - small", price: 20 },
           { name: "Cushion cover - medium", price: 25 },
           { name: "Cushion cover - large", price: 30 },
-          { name: "Tablecloth (up to 2m)", price: 40 },
-          { name: "Tablecloth (up to 4m)", price: 70 },
-          { name: "Napkin", price: 10 },
-          { name: "Tea towel", price: 10 },
           { name: "Apron", price: 18 },
           { name: "Curtain (per panel)", price: 60, unit: "per panel" },
         ],
@@ -269,7 +252,6 @@ const CATEGORIES = [
           { name: "Tie", price: 20 },
           { name: "Bow tie", price: 20 },
           { name: "Scarf", price: 20 },
-          { name: "Handkerchief", price: 10 },
           { name: "Cap / hat", price: 20 },
         ],
       },
