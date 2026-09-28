@@ -13,19 +13,266 @@ const CATEGORIES = [
   {
     id: "wash-fold",
     label: "Wash & Fold",
-    note: "Everyday clothing, pillow cases and towels — priced per basket.",
-    items: [
-      { name: "Small basket", unit: "per basket", price: 110 },
-      { name: "Big basket", unit: "per basket", price: 160 },
+    note: "Washed, dried and folded — priced per piece. Pick a group below.",
+    unit: "per piece",
+    /* PLACEHOLDER PRICES — replace each price with your real one. */
+    groups: [
+      {
+        id: "tops",
+        label: "T-shirts & Tops",
+        items: [
+          { name: "T-shirt", price: 15 },
+          { name: "Vest / singlet", price: 12 },
+          { name: "Polo shirt", price: 18 },
+          { name: "Long-sleeve top", price: 18 },
+          { name: "Casual shirt", price: 20 },
+          { name: "Top / blouse (casual)", price: 20 },
+          { name: "Hoodie", price: 30 },
+          { name: "Sweater", price: 28 },
+          { name: "Jersey / jumper", price: 28 },
+          { name: "Tracksuit top", price: 25 },
+        ],
+      },
+      {
+        id: "bottoms",
+        label: "Bottoms",
+        items: [
+          { name: "Jeans", price: 25 },
+          { name: "Trousers", price: 22 },
+          { name: "Shorts", price: 18 },
+          { name: "Leggings", price: 15 },
+          { name: "Tracksuit pants / joggers", price: 22 },
+          { name: "Casual skirt", price: 20 },
+          { name: "Cargo pants", price: 25 },
+        ],
+      },
+      {
+        id: "dresses",
+        label: "Dresses, Socks & One-piece",
+        items: [
+          { name: "Casual dress", price: 30 },
+          { name: "Nightdress", price: 22 },
+          { name: "Pyjama set (2-piece)", price: 30 },
+          { name: "Pyjama top or bottom (single)", price: 15 },
+          { name: "Jumpsuit", price: 35 },
+          { name: "Overall / coverall", price: 35 },
+          { name: "Kaftan / gown", price: 35 },
+          { name: "Socks", price: 6, unit: "per pair" },
+        ],
+      },
+      {
+        id: "sportswear",
+        label: "Sportswear",
+        items: [
+          { name: "Sports jersey / kit top", price: 18 },
+          { name: "Sports shorts", price: 15 },
+          { name: "Sports leggings", price: 18 },
+          { name: "Gym vest", price: 12 },
+          { name: "Full sports kit (top + shorts)", price: 30, unit: "per set" },
+        ],
+      },
+      {
+        id: "uniforms",
+        label: "School & Work Uniforms",
+        items: [
+          { name: "School shirt", price: 15 },
+          { name: "School trousers", price: 20 },
+          { name: "School skirt / dress", price: 22 },
+          { name: "School jersey / blazer", price: 28 },
+          { name: "Work shirt", price: 18 },
+          { name: "Work trousers", price: 22 },
+          { name: "Work overalls", price: 35 },
+          { name: "Scrubs (top or pants)", price: 20 },
+          { name: "Kitchen / chef jacket", price: 25 },
+          { name: "Reflective vest", price: 15 },
+        ],
+      },
+      {
+        id: "children",
+        label: "Children & Baby",
+        items: [
+          { name: "Baby clothes (bodysuit, vest, romper)", price: 10 },
+          { name: "Baby blanket", price: 35 },
+          { name: "Children's T-shirt / top", price: 12 },
+          { name: "Children's trousers / jeans", price: 18 },
+          { name: "Children's dress", price: 20 },
+          { name: "Children's pyjamas", price: 18 },
+          { name: "Children's jersey / hoodie", price: 20 },
+        ],
+      },
+      {
+        id: "towels",
+        label: "Towels & Bathroom",
+        items: [
+          { name: "Bath towel", price: 30 },
+          { name: "Hand towel", price: 15 },
+          { name: "Bath mat", price: 30 },
+          { name: "Bathrobe", price: 45 },
+        ],
+      },
+      {
+        id: "bedding",
+        label: "Bedding & Linen",
+        items: [
+          { name: "Bedsheet (flat or fitted)", price: 35 },
+          { name: "Duvet cover", price: 50 },
+          { name: "Pillowcase", price: 12 },
+          { name: "Cushion cover - small", price: 15 },
+          { name: "Cushion cover - medium", price: 20 },
+          { name: "Cushion cover - large", price: 25 },
+        ],
+      },
+      {
+        id: "kitchen",
+        label: "Kitchen & Dining",
+        items: [
+          { name: "Tea towel", price: 8 },
+          { name: "Apron", price: 15 },
+          { name: "Oven glove", price: 10 },
+          { name: "Napkin", price: 8 },
+          { name: "Tablecloth (up to 2m)", price: 35 },
+          { name: "Tablecloth (up to 4m)", price: 60 },
+        ],
+      },
+      {
+        id: "accessories",
+        label: "Accessories",
+        items: [
+          { name: "Scarf", price: 15 },
+          { name: "Beanie / winter hat", price: 15 },
+          { name: "Cap / hat", price: 15 },
+          { name: "Gloves", price: 12, unit: "per pair" },
+          { name: "Bandana", price: 8 },
+        ],
+      },
     ],
   },
   {
     id: "wash-iron",
     label: "Wash & Iron",
-    note: "Everyday laundry that also needs ironing — priced per basket.",
-    items: [
-      { name: "Small basket", unit: "per basket", price: 180 },
-      { name: "Big basket", unit: "per basket", price: 250 },
+    note: "Washed and ironed — priced per piece. Pick a group below.",
+    unit: "per piece",
+    /* PLACEHOLDER PRICES — replace each price with your real one. */
+    groups: [
+      {
+        id: "shirts",
+        label: "Shirts",
+        items: [
+          { name: "Shirt on hanger (short-sleeve)", price: 25 },
+          { name: "Shirt on hanger (long-sleeve)", price: 28 },
+          { name: "Formal / dress shirt", price: 30 },
+          { name: "Delicate shirt (silk, linen, satin)", price: 45 },
+        ],
+      },
+      {
+        id: "tops",
+        label: "Tops",
+        items: [
+          { name: "Blouse", price: 30 },
+          { name: "Top", price: 25 },
+          { name: "Polo shirt on hanger", price: 25 },
+          { name: "T-shirt on hanger", price: 22 },
+          { name: "Jersey / jumper", price: 35 },
+          { name: "Jersey / jumper - delicate", price: 50 },
+          { name: "Cardigan", price: 35 },
+        ],
+      },
+      {
+        id: "bottoms",
+        label: "Bottoms",
+        items: [
+          { name: "Trousers", price: 30 },
+          { name: "Formal trousers", price: 35 },
+          { name: "Jeans", price: 32 },
+          { name: "Shorts", price: 25 },
+          { name: "Skirt", price: 30 },
+        ],
+      },
+      {
+        id: "dresses",
+        label: "Dresses & One-piece",
+        items: [
+          { name: "Dress", price: 45 },
+          { name: "Jumpsuit", price: 50 },
+          { name: "Kaftan / gown", price: 50 },
+        ],
+      },
+      {
+        id: "outerwear",
+        label: "Outerwear",
+        items: [
+          { name: "Jacket / blazer", price: 50 },
+          { name: "Waistcoat", price: 30 },
+          { name: "Overcoat / raincoat", price: 70 },
+          { name: "Puffer / down coat", price: 80 },
+          { name: "Suit jacket", price: 60 },
+          { name: "Suit trousers", price: 40 },
+        ],
+      },
+      {
+        id: "uniforms",
+        label: "School & Work Uniforms",
+        items: [
+          { name: "School shirt", price: 22 },
+          { name: "School trousers", price: 28 },
+          { name: "School skirt / dress", price: 30 },
+          { name: "Work shirt", price: 25 },
+          { name: "Work trousers", price: 30 },
+          { name: "Work overalls", price: 45 },
+          { name: "Scrubs (top or pants)", price: 28 },
+          { name: "Kitchen / chef jacket", price: 32 },
+        ],
+      },
+      {
+        id: "children",
+        label: "Children & Baby",
+        items: [
+          { name: "Baby clothes", price: 15 },
+          { name: "Children's shirt", price: 18 },
+          { name: "Children's trousers", price: 22 },
+          { name: "Children's dress", price: 28 },
+          { name: "Children's school uniform", price: 25 },
+        ],
+      },
+      {
+        id: "nightwear",
+        label: "Nightwear & Homewear",
+        items: [
+          { name: "Pyjama top or bottom", price: 22 },
+          { name: "Pyjama set (2-piece)", price: 38 },
+          { name: "Nightdress", price: 30 },
+          { name: "Bathrobe", price: 55 },
+        ],
+      },
+      {
+        id: "linen",
+        label: "Linen & Household",
+        items: [
+          { name: "Bedsheet", price: 45 },
+          { name: "Duvet cover", price: 60 },
+          { name: "Pillowcase", price: 18 },
+          { name: "Cushion cover - small", price: 20 },
+          { name: "Cushion cover - medium", price: 25 },
+          { name: "Cushion cover - large", price: 30 },
+          { name: "Tablecloth (up to 2m)", price: 40 },
+          { name: "Tablecloth (up to 4m)", price: 70 },
+          { name: "Napkin", price: 10 },
+          { name: "Tea towel", price: 10 },
+          { name: "Apron", price: 18 },
+          { name: "Curtain (per panel)", price: 60, unit: "per panel" },
+        ],
+      },
+      {
+        id: "accessories",
+        label: "Accessories",
+        items: [
+          { name: "Tie", price: 20 },
+          { name: "Bow tie", price: 20 },
+          { name: "Scarf", price: 20 },
+          { name: "Handkerchief", price: 10 },
+          { name: "Cap / hat", price: 20 },
+        ],
+      },
     ],
   },
   {
@@ -36,17 +283,7 @@ const CATEGORIES = [
       { name: "Wash — coloured shoes", unit: "per pair", price: 50 },
       { name: "Wash — white shoes", unit: "per pair", price: 70 },
       { name: "Polishing", unit: "per pair", price: 35 },
-      { name: "Restoration (Renewal)", unit: "per pair", price: 200 },
-    ],
-  },
-  {
-    id: "household",
-    label: "Household Textiles",
-    note: "Curtains, bedding and covers.",
-    items: [
-      { name: "Curtain, per panel", unit: "per item", price: 60 },
-      { name: "Bedsheet", unit: "per item", price: 30 },
-      { name: "Duvet cover", unit: "per item", price: 50 },
+      { name: "Renewal (Restoration)", unit: "per pair", price: 200 },
     ],
   },
   {
@@ -69,7 +306,6 @@ const CATEGORIES = [
     items: [
       { name: "Sofa, 2-seater", unit: "per item", price: 150 },
       { name: "Sofa, 3-seater", unit: "per item", price: 200 },
-      { name: "Sofa, Corner-unit", unit: "per item", price: 250 },
       { name: "Couch — Large", unit: "per item", price: 200 },
       { name: "Couch — Medium", unit: "per item", price: 150 },
       { name: "Couch — Small", unit: "per item", price: 80 },
@@ -129,14 +365,33 @@ function itemKey(catId, itemName) {
   return catId + "::" + itemName;
 }
 
+/* Every item in a category (flattened across groups), each with its unit filled in. */
+function catItems(cat) {
+  const withUnit = (list, unit) => list.map((i) => ({ ...i, unit: i.unit || unit || "per item" }));
+  if (cat.groups) return cat.groups.flatMap((g) => withUnit(g.items, cat.unit));
+  return withUnit(cat.items, cat.unit);
+}
+
 function findItem(key) {
   const [catId, itemName] = key.split("::");
   const cat = CATEGORIES.find((c) => c.id === catId);
   if (!cat) return null;
-  const item = cat.items.find((i) => i.name === itemName);
+  const item = catItems(cat).find((i) => i.name === itemName);
   if (!item) return null;
   return { cat, item };
 }
+
+/* Drop saved basket entries for items that no longer exist (e.g. after a price-list change). */
+(function pruneCart() {
+  let changed = false;
+  Object.keys(cart).forEach((key) => {
+    if (!findItem(key)) {
+      delete cart[key];
+      changed = true;
+    }
+  });
+  if (changed) saveCart(cart);
+})();
 
 function cartTotal() {
   let total = 0;
@@ -158,9 +413,20 @@ function fmt(n) {
 /* ===================== Rendering ===================== */
 
 let activeCategory = CATEGORIES[0].id;
+const activeGroupByCat = {}; // remembers the chosen sub-tab for each category
+
+function currentCat() {
+  return CATEGORIES.find((c) => c.id === activeCategory);
+}
+function currentGroupId(cat) {
+  if (!cat.groups) return null;
+  if (!activeGroupByCat[cat.id]) activeGroupByCat[cat.id] = cat.groups[0].id;
+  return activeGroupByCat[cat.id];
+}
 
 function renderTabs() {
   const wrap = document.getElementById("category-tabs");
+  const scroll = wrap.scrollLeft;
   wrap.innerHTML = "";
   CATEGORIES.forEach((cat) => {
     const btn = document.createElement("button");
@@ -171,14 +437,56 @@ function renderTabs() {
     btn.addEventListener("click", () => {
       activeCategory = cat.id;
       renderTabs();
+      renderGroupTabs();
       renderItems();
     });
     wrap.appendChild(btn);
   });
+  wrap.scrollLeft = scroll;
+}
+
+/* Second row of small tabs (Shirts, Bottoms, ...) for categories that have groups. */
+function renderGroupTabs() {
+  const wrap = document.getElementById("group-tabs");
+  const cat = currentCat();
+  const scroll = wrap.scrollLeft;
+  wrap.innerHTML = "";
+  wrap.style.display = cat.groups ? "flex" : "none";
+  if (!cat.groups) return;
+  const activeId = currentGroupId(cat);
+  cat.groups.forEach((g) => {
+    const btn = document.createElement("button");
+    btn.className = "group-tab";
+    btn.dataset.group = g.id;
+    btn.setAttribute("role", "tab");
+    btn.setAttribute("aria-selected", g.id === activeId ? "true" : "false");
+    btn.innerHTML = `<span>${g.label}</span><span class="group-count" hidden></span>`;
+    btn.addEventListener("click", () => {
+      activeGroupByCat[cat.id] = g.id;
+      renderGroupTabs();
+      renderItems();
+    });
+    wrap.appendChild(btn);
+  });
+  wrap.scrollLeft = scroll;
+  updateGroupCounts();
+}
+
+/* Small number on each sub-tab showing how many items are already in the basket. */
+function updateGroupCounts() {
+  const cat = currentCat();
+  if (!cat || !cat.groups) return;
+  cat.groups.forEach((g) => {
+    const badge = document.querySelector(`.group-tab[data-group="${g.id}"] .group-count`);
+    if (!badge) return;
+    const total = g.items.reduce((sum, i) => sum + (cart[itemKey(cat.id, i.name)] || 0), 0);
+    badge.textContent = total;
+    badge.hidden = total === 0;
+  });
 }
 
 function renderItems() {
-  const cat = CATEGORIES.find((c) => c.id === activeCategory);
+  const cat = currentCat();
   document.getElementById("category-note").textContent = cat.note;
 
   const list = document.getElementById("item-list");
@@ -188,7 +496,15 @@ function renderItems() {
     list.appendChild(buildHouseCleaningCalculator());
   }
 
-  cat.items.forEach((item) => {
+  let items;
+  if (cat.groups) {
+    const group = cat.groups.find((g) => g.id === currentGroupId(cat));
+    items = group.items.map((i) => ({ ...i, unit: i.unit || cat.unit || "per item" }));
+  } else {
+    items = catItems(cat);
+  }
+
+  items.forEach((item) => {
     const key = itemKey(cat.id, item.name);
     const qty = cart[key] || 0;
 
@@ -399,6 +715,8 @@ function renderCart() {
   document.getElementById("cart-bar-count").textContent = count + (count === 1 ? " item" : " items");
   document.getElementById("cart-bar-total").textContent = fmt(total);
 
+  updateGroupCounts();
+
   // Keep the floating WhatsApp bubble from overlapping the cart bar
   document.getElementById("whatsapp-bubble-link").classList.toggle("raised", barVisible);
 
@@ -421,7 +739,7 @@ function renderCart() {
     const li = document.createElement("li");
     li.className = "cart-item-row";
     li.innerHTML = `
-      <span class="name">${found.item.name}</span>
+      <span class="name">${found.item.name}<span class="service-tag">${found.cat.label}</span></span>
       <span class="qty">×${qty}</span>
       <span class="line-total">${fmt(found.item.price * qty)}</span>
     `;
@@ -452,7 +770,7 @@ function buildBookingMessage() {
     const found = findItem(key);
     if (!found) return;
     const qty = cart[key];
-    lines.push(`- ${found.item.name} x${qty} (${fmt(found.item.price * qty)})`);
+    lines.push(`- ${found.item.name} [${found.cat.label}] x${qty} (${fmt(found.item.price * qty)})`);
   });
   customCart.forEach((c) => {
     lines.push(`- ${c.label} (${fmt(c.price)})`);
@@ -502,5 +820,6 @@ document.getElementById("cart-clear").addEventListener("click", () => {
 /* ===================== Init ===================== */
 
 renderTabs();
+renderGroupTabs();
 renderItems();
 renderCart();

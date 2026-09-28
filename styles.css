@@ -228,6 +228,55 @@ a { color: inherit; }
   color: #fff;
 }
 
+/* Second row of tabs inside Wash & Fold / Wash & Iron */
+.group-tabs {
+  display: none;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 6px 0 4px;
+  scrollbar-width: none;
+}
+.group-tabs::-webkit-scrollbar { display: none; }
+.group-tab {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.group-tab[aria-selected="true"] {
+  background: #fff;
+  border-color: var(--ink);
+}
+.group-count {
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+.group-count[hidden] { display: none; }
+.service-tag {
+  display: block;
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  opacity: 0.8;
+}
+
 .category-note {
   color: var(--ink-soft);
   font-size: 13.5px;
