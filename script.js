@@ -1,9 +1,7 @@
 /* =========================================================
    G-man's Home & Laundry Care — site data & cart logic
    =========================================================
-   EDIT PRICES HERE. Every price below is a PLACEHOLDER (N$)
-   so the site works out of the box — replace with your real
-   prices before going live. Add or remove items/categories
+   EDIT PRICES HERE (all amounts in N$). Add or remove items/categories
    freely; the site rebuilds itself from this list.
    ========================================================= */
 
@@ -15,7 +13,6 @@ const CATEGORIES = [
     label: "Wash & Fold",
     note: "Washed, dried and folded — priced per piece. Pick a group below.",
     unit: "per piece",
-    /* PLACEHOLDER PRICES — replace each price with your real one. */
     groups: [
       {
         id: "tops",
@@ -123,6 +120,18 @@ const CATEGORIES = [
         ],
       },
       {
+        id: "kitchen",
+        label: "Kitchen & Dining",
+        items: [
+          { name: "Tea towel", price: 8 },
+          { name: "Apron", price: 15 },
+          { name: "Oven glove", price: 10 },
+          { name: "Napkin", price: 8 },
+          { name: "Tablecloth (up to 2m)", price: 35 },
+          { name: "Tablecloth (up to 4m)", price: 60 },
+        ],
+      },
+      {
         id: "accessories",
         label: "Accessories",
         items: [
@@ -140,7 +149,6 @@ const CATEGORIES = [
     label: "Wash & Iron",
     note: "Washed and ironed — priced per piece. Pick a group below.",
     unit: "per piece",
-    /* PLACEHOLDER PRICES — replace each price with your real one. */
     groups: [
       {
         id: "shirts",
@@ -208,6 +216,7 @@ const CATEGORIES = [
           { name: "Work trousers", price: 30 },
           { name: "Work overalls", price: 45 },
           { name: "Scrubs (top or pants)", price: 28 },
+          { name: "Kitchen / chef jacket", price: 32 },
         ],
       },
       {
@@ -241,6 +250,10 @@ const CATEGORIES = [
           { name: "Cushion cover - small", price: 20 },
           { name: "Cushion cover - medium", price: 25 },
           { name: "Cushion cover - large", price: 30 },
+          { name: "Tablecloth (up to 2m)", price: 40 },
+          { name: "Tablecloth (up to 4m)", price: 70 },
+          { name: "Napkin", price: 10 },
+          { name: "Tea towel", price: 10 },
           { name: "Apron", price: 18 },
           { name: "Curtain (per panel)", price: 60, unit: "per panel" },
         ],
@@ -252,6 +265,7 @@ const CATEGORIES = [
           { name: "Tie", price: 20 },
           { name: "Bow tie", price: 20 },
           { name: "Scarf", price: 20 },
+          { name: "Handkerchief", price: 10 },
           { name: "Cap / hat", price: 20 },
         ],
       },
@@ -414,8 +428,7 @@ function renderTabs() {
     const btn = document.createElement("button");
     btn.className = "category-tab";
     btn.textContent = cat.label;
-    btn.setAttribute("role", "tab");
-    btn.setAttribute("aria-selected", cat.id === activeCategory ? "true" : "false");
+    btn.setAttribute("aria-pressed", cat.id === activeCategory ? "true" : "false");
     btn.addEventListener("click", () => {
       activeCategory = cat.id;
       renderTabs();
@@ -440,8 +453,7 @@ function renderGroupTabs() {
     const btn = document.createElement("button");
     btn.className = "group-tab";
     btn.dataset.group = g.id;
-    btn.setAttribute("role", "tab");
-    btn.setAttribute("aria-selected", g.id === activeId ? "true" : "false");
+    btn.setAttribute("aria-pressed", g.id === activeId ? "true" : "false");
     btn.innerHTML = `<span>${g.label}</span><span class="group-count" hidden></span>`;
     btn.addEventListener("click", () => {
       activeGroupByCat[cat.id] = g.id;
@@ -615,7 +627,7 @@ function renderHcCardContents() {
   sqmRow.className = "hc-row";
   sqmRow.innerHTML = `
     <span class="hc-label">Living / open area (m²)<br><span class="hc-rate">N$${HOUSE_CLEANING_RATES.perSqm}/m²</span></span>
-    <input type="number" min="0" step="1" class="hc-sqm-input" id="hc-sqm-input" value="${hcConfig.sqm}">
+    <input type="number" min="0" step="1" class="hc-sqm-input" id="hc-sqm-input" aria-label="Living or open area in square metres" value="${hcConfig.sqm}">
   `;
   hcCardEl.appendChild(sqmRow);
   hcCardEl.querySelector("#hc-sqm-input").addEventListener("input", (e) => {
@@ -628,7 +640,7 @@ function renderHcCardContents() {
   bathroomRow.className = "hc-row";
   bathroomRow.innerHTML = `
     <span class="hc-label">Bathroom &amp; Toilet, W/C (m²)<br><span class="hc-rate">N$${HOUSE_CLEANING_RATES.bathroomBase} up to 2m², then N$${HOUSE_CLEANING_RATES.perSqm}/m²</span></span>
-    <input type="number" min="0" step="1" class="hc-sqm-input" id="hc-bathroom-input" value="${hcConfig.bathroomSqm}">
+    <input type="number" min="0" step="1" class="hc-sqm-input" id="hc-bathroom-input" aria-label="Bathroom and toilet area in square metres" value="${hcConfig.bathroomSqm}">
   `;
   hcCardEl.appendChild(bathroomRow);
   hcCardEl.querySelector("#hc-bathroom-input").addEventListener("input", (e) => {
@@ -734,7 +746,7 @@ function renderCart() {
     li.innerHTML = `
       <span class="name">${c.label}</span>
       <span class="line-total">${fmt(c.price)}</span>
-      <button type="button" class="cart-item-remove" aria-label="Remove">&times;</button>
+      <button type="button" class="cart-item-remove" aria-label="Remove ${c.label} from basket">&times;</button>
     `;
     li.querySelector(".cart-item-remove").addEventListener("click", () => removeCustomItem(c.id));
     itemsList.appendChild(li);
@@ -776,14 +788,28 @@ function updateWhatsappLink() {
 /* ===================== Cart drawer open/close ===================== */
 
 const drawer = document.getElementById("cart-drawer");
+let lastFocus = null;
 function openCart() {
+  lastFocus = document.activeElement;
   drawer.classList.add("open");
   drawer.setAttribute("aria-hidden", "false");
+  document.getElementById("cart-close").focus();
 }
 function closeCart() {
   drawer.classList.remove("open");
   drawer.setAttribute("aria-hidden", "true");
+  if (lastFocus && lastFocus.focus) lastFocus.focus();
 }
+document.addEventListener("keydown", (e) => {
+  if (!drawer.classList.contains("open")) return;
+  if (e.key === "Escape") { closeCart(); return; }
+  if (e.key !== "Tab") return;
+  const f = [...drawer.querySelectorAll("a[href], button, input")].filter((el) => el.offsetParent !== null);
+  if (!f.length) return;
+  const first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+});
 document.getElementById("cart-bar").addEventListener("click", openCart);
 document.getElementById("header-cart-btn").addEventListener("click", openCart);
 document.getElementById("cart-close").addEventListener("click", closeCart);

@@ -222,7 +222,7 @@ a { color: inherit; }
   cursor: pointer;
   white-space: nowrap;
 }
-.category-tab[aria-selected="true"] {
+.category-tab[aria-pressed="true"] {
   background: var(--navy);
   border-color: var(--navy);
   color: #fff;
@@ -253,7 +253,7 @@ a { color: inherit; }
   cursor: pointer;
   white-space: nowrap;
 }
-.group-tab[aria-selected="true"] {
+.group-tab[aria-pressed="true"] {
   background: #fff;
   border-color: var(--ink);
 }
@@ -647,4 +647,16 @@ a { color: inherit; }
 @media (min-width: 640px) {
   .hero h1 { font-size: 29px; }
   .item-row { padding: 16px 4px; }
+}
+
+/* Contact + legal links */
+.contact-h { margin-top: 28px; }
+.contact-list { list-style: none; padding: 0; margin: 8px 0 0; color: var(--ink-soft); font-size: 14.5px; }
+.contact-list li { margin: 4px 0; }
+.contact-list a { color: inherit; }
+.footer-legal { margin-top: 10px; font-size: 13px; }
+.footer-legal a { text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
